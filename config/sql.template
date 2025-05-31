@@ -1,0 +1,34 @@
+sql {
+    driver = "rlm_sql_mysql"
+    dialect = "mysql"
+
+    server = "${DB_HOST}"
+    port = ${DB_PORT}
+    login = "${DB_USER}"
+    password = "${DB_PASS}"
+    radius_db = "${DB_NAME}"
+
+    read_clients = no
+    client_table = "nas"
+
+    pool {
+        start = 5
+        min = 3
+        max = 10
+        spare = 3
+        uses = 0
+        lifetime = 0
+        idle_timeout = 60
+    }
+
+    logfile = /var/log/freeradius/sqltrace.sql
+    read_groups = yes
+    read_profiles = yes
+    read_users = yes
+    read_acct = yes
+    read_auth = yes
+    read_check_items = yes
+    read_reply_items = yes
+
+    delete_stale_sessions = yes
+}

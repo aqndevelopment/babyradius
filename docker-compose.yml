@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  freeradius:
+    platform: linux/amd64
+    build: .
+    container_name: freeradius
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813/udp"
+    environment:
+      DB_HOST: host.docker.internal   # atau IP MySQL server
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: radius
+      DB_PORT: 3306
+    restart: unless-stopped
