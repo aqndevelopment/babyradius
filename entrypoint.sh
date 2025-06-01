@@ -1,15 +1,20 @@
 #!/bin/bash
 set -e
+set -x
 
-echo "[entrypoint] Generate sql config from template..."
-envsubst < /etc/freeradius/3.0/mods-available/sql.template > /etc/freeradius/3.0/mods-available/sql
+#mkdir -p /etc/freeradius/3.0/mods-enabled/
 
-# Remove old symlink kalau ada, lalu buat symlink baru ke sql yang sudah digenerate
-if [ -L /etc/freeradius/3.0/mods-enabled/sql ]; then
-    rm /etc/freeradius/3.0/mods-enabled/sql
-fi
+#envsubst < /etc/freeradius/3.0/mods-available/sql.template > /etc/freeradius/3.0/mods-available/sql
+# Render template ke file final
+sed -e "s|__DB_HOST__|${DB_HOST}|g" \
+    -e "s|__DB_PORT__|${DB_PORT}|g" \
+    -e "s|__DB_USER__|${DB_USER}|g" \
+    -e "s|__DB_PASS__|${DB_PASS}|g" \
+    -e "s|__DB_NAME__|${DB_NAME}|g" \
+    /etc/freeradius/3.0/mods-available/sql.template \
+    > /etc/freeradius/3.0/mods-available/sql
 
-ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/sql
+# sed -i 's|@@MODULE_NAME@@|${.:name}|g' /etc/freeradius/3.0/mods-available/sql
+ln -sf /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/sql
 
-echo "[entrypoint] Starting FreeRADIUS..."
-exec "$@"
+exec freeradius -X

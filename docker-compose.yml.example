@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  freeradius:
+    container_name: radius
+    platform: linux/amd64
+    build: .
+    image: babyradius       
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813/udp"
+    environment:
+      DB_HOST: 127.0.0.1
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: radius_db
+      DB_PORT: 3306
