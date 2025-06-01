@@ -14,3 +14,29 @@ Pastikan database (misalnya bernama `radius`) sudah dibuat di MySQL/MariaDB. Kem
 
 ```bash
 mysql -u root -p radius < schema.sql
+
+
+## 2. 🛠 Import Table Schema
+
+Insert client NAS ke table
+
+```bash
+INSERT INTO nas (
+  nasname, shortname, type, ports, secret, server, community, description
+) VALUES (
+  '0.0.0.0/0', 'public', 'other', NULL, 'testing123', NULL, NULL, 'Allow all clients'
+);
+
+## 3. Tambahkan User test
+Insert User ke table radcheck
+
+```bash
+INSERT INTO radcheck (username, attribute, op, value)
+VALUES ('test', 'Cleartext-Password', ':=', 'test');
+
+
+## Jalankan docker compose
+Jalankan docker compose,
+
+```bash
+docker-compose up --build -d
