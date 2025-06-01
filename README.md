@@ -33,6 +33,12 @@ INSERT INTO radcheck (username, attribute, op, value)
 VALUES ('test', 'Cleartext-Password', ':=', 'test');
 ```
 
+Batasi sesi user agar hanya bisa terhubung selama 1 jam (3600 detik)
+```sql
+INSERT INTO radreply (username, attribute, op, value)
+VALUES ('test', 'Session-Timeout', ':=', '3600');
+```
+
 ## 4. 🐳 Jalankan Docker Compose
 Jalankan docker compose untuk build dan menjalankan service:
 
