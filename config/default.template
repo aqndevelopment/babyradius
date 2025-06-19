@@ -284,6 +284,10 @@ listen {
 authorize {
         if ("%{sql:SELECT COALESCE(SUM(acctsessiontime), 0) FROM radacct WHERE username = '%{User-Name}'}" >= \
             "%{sql:SELECT value FROM radreply WHERE username = '%{User-Name}' AND attribute = 'Session-Timeout'}") {
+            #reject
+            update reply {
+                Reply-Message := "Waktu Anda sudah habis. Silakan hubungi admin."
+            }
             reject
         }
         #
